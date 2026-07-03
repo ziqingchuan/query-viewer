@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 
-export default function UploadZone({ onFile }) {
+export default function UploadZone({ onFile, onDemo }) {
   const [dragging, setDragging] = useState(false);
   const inputRef = useRef();
 
@@ -17,24 +17,29 @@ export default function UploadZone({ onFile }) {
   };
 
   return (
-    <div
-      className={`upload-zone ${dragging ? 'dragging' : ''}`}
-      onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
-      onDragLeave={() => setDragging(false)}
-      onDrop={handleDrop}
-      onClick={() => inputRef.current.click()}
-    >
-      <div className="upload-icon">⬆</div>
-      <p className="upload-title">上传 Query Log JSON</p>
-      <p className="upload-sub">拖拽文件到此处，或点击选择文件</p>
-      <span className="upload-hint">.json 格式</span>
-      <input
-        ref={inputRef}
-        type="file"
-        accept=".json"
-        style={{ display: 'none' }}
-        onChange={handleChange}
-      />
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
+      <div
+        className={`upload-zone ${dragging ? 'dragging' : ''}`}
+        onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
+        onDragLeave={() => setDragging(false)}
+        onDrop={handleDrop}
+        onClick={() => inputRef.current.click()}
+      >
+        <div className="upload-icon">⬆</div>
+        <p className="upload-title">上传 Query Log JSON</p>
+        <p className="upload-sub">拖拽文件到此处，或点击选择文件</p>
+        <span className="upload-hint">.json 格式</span>
+        <input
+          ref={inputRef}
+          type="file"
+          accept=".json"
+          style={{ display: 'none' }}
+          onChange={handleChange}
+        />
+      </div>
+      <button className="btn btn-ghost demo-btn" onClick={onDemo}>
+        ▶ 一键试用 Demo 数据
+      </button>
     </div>
   );
 }

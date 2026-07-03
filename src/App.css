@@ -1057,6 +1057,18 @@ body {
   font-size: 14px;
 }
 
+.demo-btn {
+  font-size: 14px;
+  padding: 9px 24px;
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.demo-btn:hover {
+  background: var(--accent-glow);
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
 /* Table view scrollable wrapper */
 .table-view-scroll {
   flex: 1;

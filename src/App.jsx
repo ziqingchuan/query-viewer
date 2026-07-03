@@ -1,5 +1,6 @@
 import { useState, useMemo, useCallback, useEffect } from 'react';
 import { parseQueryLog, parseForUserView, rowsToMarkdown } from './utils/parseJson';
+import mockData from './mockData';
 import UploadZone from './components/UploadZone';
 import DataTable from './components/DataTable';
 import FilterBar from './components/FilterBar';
@@ -54,6 +55,17 @@ export default function App() {
       }
     };
     reader.readAsText(file);
+  }, []);
+
+  const handleDemo = useCallback(() => {
+    localStorage.removeItem(LS_KEY);
+    localStorage.removeItem(LS_NAME);
+    setRows(parseQueryLog(mockData));
+    setUserData(parseForUserView(mockData));
+    setFileName('Demo 数据');
+    setFilters({ status: '', baidu_cc_model: '', search: '' });
+    setPage(1);
+    setView('table');
   }, []);
 
   const statusOptions = useMemo(() => {
@@ -142,7 +154,7 @@ export default function App() {
       <main className="app-main">
         {!hasData ? (
           <div className="upload-page">
-            <UploadZone onFile={handleFile} />
+            <UploadZone onFile={handleFile} onDemo={handleDemo} />
             {error && <p className="error-msg">{error}</p>}
           </div>
         ) : view === 'table' ? (

@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "deployments": [
+    {
+      "slug": "dodo-query-viewer",
+      "title": "query 数据可视化平台",
+      "base": "dist",
+      "entry": "index.html",
+      "visibility": "internal",
+      "glob": [
+        "**/*"
+      ],
+      "exclude": [],
+      "lastDeployedAt": "2026-07-03T10:02:43.948123+00:00"
+    }
+  ]
+}
