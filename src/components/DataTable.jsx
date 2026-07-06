@@ -4,7 +4,7 @@ const COLUMNS = [
   { key: 'task_id', label: 'Task ID', width: '9%', nowrap: true },
   { key: 'query_id', label: 'Query ID', width: '9%', nowrap: true },
   { key: 'query', label: 'Query', width: '30%' },
-  { key: 'status', label: 'Status', width: '8%' },
+  { key: 'status', label: 'Status', width: '12%' },
   { key: 'baidu_cc_model', label: 'Model', width: '14%' },
   { key: 'duration_ms', label: 'Duration (ms)', width: '12%', nowrap: true },
   { key: 'error_message', label: 'Error', width: '18%' },

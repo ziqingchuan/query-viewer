@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useEffect } from 'react';
+import { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import { parseQueryLog, parseForUserView, rowsToMarkdown } from './utils/parseJson';
 import mockData from './mockData';
 import UploadZone from './components/UploadZone';
@@ -10,6 +10,29 @@ import './App.css';
 
 const LS_KEY = 'query_log_raw';
 const LS_NAME = 'query_log_name';
+
+function mergeJsonObjects(existing, incoming) {
+  const merged = { ...existing };
+  for (const [taskId, taskData] of Object.entries(incoming)) {
+    if (!merged[taskId]) {
+      // task_id 不存在，直接加入
+      merged[taskId] = taskData;
+    } else {
+      // task_id 已存在，合并 queries（以 query_id 去重，旧的保留，新的追加）
+      const existingQueryIds = new Set(
+        (merged[taskId].queries ?? []).map((q) => q.query_id)
+      );
+      const newQueries = (taskData.queries ?? []).filter(
+        (q) => !existingQueryIds.has(q.query_id)
+      );
+      merged[taskId] = {
+        ...merged[taskId],
+        queries: [...(merged[taskId].queries ?? []), ...newQueries],
+      };
+    }
+  }
+  return merged;
+}
 
 export default function App() {
   const [rows, setRows] = useState(() => {
@@ -35,6 +58,7 @@ export default function App() {
   const [error, setError] = useState('');
   const [page, setPage] = useState(1);
   const PAGE_SIZE = 50;
+  const appendInputRef = useRef();
 
   const handleFile = useCallback((file) => {
     setError('');
@@ -56,6 +80,30 @@ export default function App() {
     };
     reader.readAsText(file);
   }, []);
+
+  const handleAppendFile = useCallback((file) => {
+    setError('');
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const incoming = JSON.parse(e.target.result);
+        const existingRaw = localStorage.getItem(LS_KEY);
+        const existing = existingRaw ? JSON.parse(existingRaw) : {};
+        const merged = mergeJsonObjects(existing, incoming);
+        const mergedStr = JSON.stringify(merged);
+        const mergedName = fileName ? `${fileName} + ${file.name}` : file.name;
+        localStorage.setItem(LS_KEY, mergedStr);
+        localStorage.setItem(LS_NAME, mergedName);
+        setRows(parseQueryLog(merged));
+        setUserData(parseForUserView(merged));
+        setFileName(mergedName);
+        setPage(1);
+      } catch {
+        setError('JSON 解析失败，请确认文件格式正确。');
+      }
+    };
+    reader.readAsText(file);
+  }, [fileName]);
 
   const handleDemo = useCallback(() => {
     localStorage.removeItem(LS_KEY);
@@ -168,6 +216,16 @@ export default function App() {
                 <button className="btn btn-export" onClick={handleExportMd}>
                   ↓ 导出 Markdown
                 </button>
+                <button className="btn btn-ghost" onClick={() => appendInputRef.current.click()}>
+                  + 继续上传
+                </button>
+                <input
+                  ref={appendInputRef}
+                  type="file"
+                  accept=".json"
+                  style={{ display: 'none' }}
+                  onChange={(e) => { const f = e.target.files?.[0]; if (f) { handleAppendFile(f); e.target.value = ''; } }}
+                />
                 <button className="btn btn-ghost" onClick={() => { localStorage.removeItem(LS_KEY); localStorage.removeItem(LS_NAME); setRows([]); setUserData({}); setFileName(''); setUvSelectedUser(null); setUvSelectedTaskId(null); }}>
                   ✕ 重新上传
                 </button>

@@ -180,7 +180,6 @@ body {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 16px;
-  flex-wrap: wrap;
   gap: 10px;
 }
 
@@ -188,13 +187,16 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
-  flex-wrap: wrap;
+  min-width: 0;
+  flex-shrink: 1;
+  overflow: hidden;
 }
 
 .toolbar-right {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-shrink: 0;
 }
 
 .file-badge {
@@ -205,6 +207,10 @@ body {
   border: 1px solid rgba(91, 141, 238, 0.25);
   padding: 4px 12px;
   border-radius: 20px;
+  max-width: 320px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* ============================
@@ -213,7 +219,9 @@ body {
 .stats-bar {
   display: flex;
   gap: 12px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  align-items: center;
+  white-space: nowrap;
 }
 
 .stat {
@@ -266,10 +274,10 @@ body {
 .btn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 16px;
-  border-radius: var(--radius-sm);
-  font-size: 14px;
+  gap: 5px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 13px;
   font-weight: 500;
   cursor: pointer;
   border: none;
@@ -279,7 +287,6 @@ body {
 .btn-export {
   background: var(--accent);
   color: #fff;
-  margin-right: 10px;
 }
 .btn-export:hover { background: var(--accent-dim); box-shadow: 0 0 0 3px var(--accent-glow); }
 
@@ -290,7 +297,7 @@ body {
 }
 .btn-ghost:hover { background: var(--bg-hover); color: var(--text); border-color: var(--text-muted); }
 
-.btn-sm { padding: 5px 12px; font-size: 13px; }
+.btn-sm { padding: 3px 10px; font-size: 12px; }
 
 /* ============================
    Table
@@ -445,7 +452,9 @@ body {
   font-size: 11.5px;
   font-weight: 600;
   letter-spacing: 0.03em;
-  white-space: nowrap;
+  white-space: normal;
+  word-break: break-word;
+  max-width: 100%;
 }
 
 .badge-ok { background: var(--ok-bg); color: var(--ok); }
@@ -512,6 +521,7 @@ body {
 
 .custom-select-trigger {
   width: 100%;
+  height: 30px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1150,17 +1160,31 @@ body {
    ============================ */
 @media (max-width: 768px) {
 
-  /* Header */
+  /* Header — stack title and view-toggle on separate rows */
   .app-header {
     padding: 0 14px;
-    height: 48px;
+    height: auto;
+    min-height: 48px;
+  }
+  .header-content {
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 8px 0;
   }
   .app-header h1 {
     font-size: 14px;
   }
+  .header-right {
+    width: 100%;
+  }
+  .view-toggle {
+    width: 100%;
+  }
   .view-tab {
+    flex: 1;
     padding: 5px 10px;
     font-size: 12px;
+    text-align: center;
   }
 
   /* Table view scroll */
@@ -1174,16 +1198,21 @@ body {
     align-items: flex-start;
     gap: 8px;
   }
+  .toolbar-left {
+    width: 100%;
+    overflow: hidden;
+  }
   .toolbar-right {
     width: 100%;
     justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 6px;
   }
-  .btn-export { font-size: 12px; padding: 6px 12px; }
-  .btn-ghost  { font-size: 12px; padding: 6px 12px; }
+  .btn-export, .btn-ghost { font-size: 12px; padding: 4px 11px; }
 
-  /* Stats bar */
-  .stats-bar { gap: 8px; }
-  .stat { font-size: 12px; }
+  /* Stats bar — allow scroll on mobile */
+  .stats-bar { gap: 8px; overflow-x: auto; flex-wrap: nowrap; }
+  .stat { font-size: 12px; white-space: nowrap; }
 
   /* Filter bar */
   .filter-bar { gap: 8px; }
