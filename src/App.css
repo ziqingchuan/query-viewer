@@ -1069,6 +1069,71 @@ body {
   border-color: var(--accent);
 }
 
+/* Mobile cards — hidden on desktop, shown via media query */
+.mobile-cards { display: none; }
+
+.mobile-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.mobile-card:active { background: var(--bg-hover); }
+.mobile-card-err { border-left: 3px solid var(--err); }
+
+.mobile-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.mobile-card-ids {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.mobile-card-sep { color: var(--text-dim); }
+
+.mobile-card-query {
+  font-size: 13.5px;
+  color: var(--text);
+  line-height: 1.55;
+  word-break: break-word;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+.mobile-card-query.full {
+  -webkit-line-clamp: unset;
+  overflow: visible;
+}
+
+.mobile-card-meta {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.mobile-card-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 6px 10px;
+  background: var(--err-bg);
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  color: var(--err);
+  word-break: break-word;
+}
+
 /* Table view scrollable wrapper */
 .table-view-scroll {
   flex: 1;
@@ -1079,3 +1144,110 @@ body {
   flex-direction: column;
   padding: 24px 32px;
 }
+
+/* ============================
+   Mobile Responsive (≤ 768px)
+   ============================ */
+@media (max-width: 768px) {
+
+  /* Header */
+  .app-header {
+    padding: 0 14px;
+    height: 48px;
+  }
+  .app-header h1 {
+    font-size: 14px;
+  }
+  .view-tab {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+
+  /* Table view scroll */
+  .table-view-scroll {
+    padding: 12px 14px;
+  }
+
+  /* Toolbar */
+  .toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .toolbar-right {
+    width: 100%;
+    justify-content: flex-end;
+  }
+  .btn-export { font-size: 12px; padding: 6px 12px; }
+  .btn-ghost  { font-size: 12px; padding: 6px 12px; }
+
+  /* Stats bar */
+  .stats-bar { gap: 8px; }
+  .stat { font-size: 12px; }
+
+  /* Filter bar */
+  .filter-bar { gap: 8px; }
+  .filter-input { min-width: 0; font-size: 13px; }
+
+  /* Hide full table, show mobile cards instead */
+  .table-wrapper { display: none; }
+  .mobile-cards  { display: flex; flex-direction: column; gap: 10px; }
+
+  /* Pagination */
+  .pagination { gap: 4px; }
+  .page-info { font-size: 12px; }
+
+  /* User view layout */
+  .uv-layout {
+    padding: 12px 14px;
+  }
+
+  /* On mobile, uv-body stacks vertically */
+  .uv-body {
+    flex-direction: column;
+    overflow: visible;
+    overflow-y: auto;
+  }
+
+  /* Sidebar becomes a horizontal scrollable task strip */
+  .uv-sidebar {
+    width: 100%;
+    flex-shrink: 0;
+    max-height: 160px;
+  }
+  .uv-task-list {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+  .uv-task-item {
+    flex-direction: column;
+    align-items: flex-start;
+    min-width: 140px;
+    max-width: 180px;
+    border-bottom: none;
+    border-right: 1px solid var(--border-light);
+    flex-shrink: 0;
+  }
+  .uv-task-item.active {
+    border-left: none;
+    border-bottom: 3px solid var(--accent);
+    padding-left: 14px;
+  }
+
+  /* Detail pane */
+  .uv-detail {
+    overflow: visible;
+  }
+  .uv-queries {
+    overflow-y: visible;
+  }
+
+  /* Meta bar wraps nicely */
+  .uv-meta-bar {
+    gap: 10px;
+    padding: 8px 12px;
+  }
+}
+
