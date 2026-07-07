@@ -9,6 +9,7 @@ export function parseQueryLog(json) {
     for (const q of queries) {
       rows.push({
         task_id: taskId,
+        user_name: taskData.user_name ?? '',
         query_id: q.query_id ?? '',
         query: q.query ?? '',
         status: q.status ?? '',
@@ -42,6 +43,7 @@ export function parseForUserView(json) {
         baidu_cc_model: q.baidu_cc_model ?? '',
         duration_ms: q.duration_ms ?? null,
         error_message: q.error_message ?? null,
+        created_at: q.created_at ?? null,
       })),
     });
   }

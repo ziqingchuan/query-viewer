@@ -17,6 +17,11 @@ function QueryCard({ q }) {
       <div className="qcard-header">
         <span className="qcard-id">#{q.query_id}</span>
         <StatusBadge status={q.status} />
+        {q.created_at && (
+          <span className="qcard-chip qcard-chip-time">
+            {q.created_at}
+          </span>
+        )}
         {q.baidu_cc_model && (
           <span className="qcard-chip qcard-chip-model">
             <span className="qcard-chip-label">模型</span>

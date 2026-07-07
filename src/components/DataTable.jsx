@@ -2,12 +2,13 @@ import { useState } from 'react';
 
 const COLUMNS = [
   { key: 'task_id', label: 'Task ID', width: '9%', nowrap: true },
+  { key: 'user_name', label: 'User', width: '8%' },
   { key: 'query_id', label: 'Query ID', width: '9%', nowrap: true },
-  { key: 'query', label: 'Query', width: '30%' },
-  { key: 'status', label: 'Status', width: '12%' },
-  { key: 'baidu_cc_model', label: 'Model', width: '14%' },
+  { key: 'query', label: 'Query', width: '26%' },
+  { key: 'status', label: 'Status', width: '11%' },
+  { key: 'baidu_cc_model', label: 'Model', width: '12%' },
   { key: 'duration_ms', label: 'Duration (ms)', width: '12%', nowrap: true },
-  { key: 'error_message', label: 'Error', width: '18%' },
+  { key: 'error_message', label: 'Error', width: '13%' },
 ];
 
 function SortIcon({ active, dir }) {
@@ -100,6 +101,7 @@ export default function DataTable({ rows, sort, onSort }) {
                     onClick={() => setExpandedRow(isExpanded ? null : i)}
                   >
                     <td className="mono nowrap">{row.task_id}</td>
+                    <td className="user-cell" title={row.user_name}>{row.user_name || '—'}</td>
                     <td className="mono nowrap">{row.query_id}</td>
                     <td className="query-cell">
                       <span className={`query-preview ${isExpanded ? 'full' : ''}`}>
